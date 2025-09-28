@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  ragbot:
+    build: .
+    container_name: ragbot
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}

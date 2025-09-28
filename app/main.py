@@ -1,9 +1,12 @@
+import os
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import router
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Create FastAPI app
 app = FastAPI(
@@ -12,7 +15,7 @@ app = FastAPI(
     version="2.0.0"
 )
 
-# Add CORS middleware for better frontend support
+# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -22,20 +25,18 @@ app.add_middleware(
 )
 
 # Mount static files and templates
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
+templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 # Include API routes
 app.include_router(router, prefix="/api", tags=["RAG Bot"])
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    """Serve the main chat interface"""
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.get("/health")
 async def health_check():
-    """Health check endpoint"""
     return {"status": "healthy", "message": "RAG Bot is running!"}
 
 if __name__ == "__main__":
