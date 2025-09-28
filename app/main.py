@@ -1,9 +1,11 @@
 import os
-from fastapi import FastAPI, Request
+import uuid
+from fastapi import FastAPI, Request, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 from app.api.routes import router
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -14,6 +16,9 @@ app = FastAPI(
     description="A sophisticated RAG bot with multi-PDF support and modular architecture",
     version="2.0.0"
 )
+
+# Add session middleware (add this before CORS middleware)
+app.add_middleware(SessionMiddleware, secret_key="your-secret-key-change-this-in-production")
 
 # Add CORS middleware
 app.add_middleware(
@@ -28,11 +33,19 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
-# Include API routes
+def get_session_id(request: Request) -> str:
+    """Get or create a session ID for the user"""
+    if "session_id" not in request.session:
+        request.session["session_id"] = str(uuid.uuid4())
+    return request.session["session_id"]
+
+# Include API routes with session dependency
 app.include_router(router, prefix="/api", tags=["RAG Bot"])
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
+    # Ensure user has a session ID
+    get_session_id(request)
     return templates.TemplateResponse("index.html", {"request": request})
 
 @app.get("/health")

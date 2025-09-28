@@ -18,7 +18,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 10px;
         }
 
         .container {
@@ -26,8 +26,8 @@
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 800px;
-            height: 90vh;
+            max-width: 1200px;
+            height: 95vh;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -36,31 +36,58 @@
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 20px;
+            padding: 15px 20px;
             text-align: center;
             border-radius: 20px 20px 0 0;
         }
 
         .header h1 {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
         }
 
         .header p {
             opacity: 0.9;
-            font-size: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 320px;
+            background: #f8f9fa;
+            border-right: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
         }
 
         .upload-section {
-            padding: 20px;
+            padding: 15px;
             border-bottom: 1px solid #eee;
-            background: #f8f9fa;
+        }
+
+        .instruction-banner {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .instruction-banner.warning {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
         }
 
         .upload-area {
             border: 2px dashed #667eea;
-            border-radius: 15px;
-            padding: 30px;
+            border-radius: 10px;
+            padding: 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -79,24 +106,61 @@
         }
 
         .upload-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
+            font-size: 2rem;
+            margin-bottom: 10px;
             color: #667eea;
         }
 
         .upload-text {
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             color: #666;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
         .upload-subtext {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #999;
         }
 
         #fileInput {
             display: none;
+        }
+
+        .status-section {
+            padding: 15px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .status-bar {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.85rem;
+            color: #1976d2;
+            margin-bottom: 15px;
+        }
+
+        .document-list {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .document-item {
+            padding: 8px 12px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+
+        .document-item:last-child {
+            border-bottom: none;
         }
 
         .chat-container {
@@ -111,23 +175,76 @@
             padding: 20px;
             overflow-y: auto;
             background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .welcome-message {
+            text-align: center;
+            color: #666;
+            margin: auto;
+            max-width: 500px;
+        }
+
+        .welcome-message h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .welcome-message p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .welcome-steps {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            background: #f8f9ff;
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+            font-size: 0.9rem;
         }
 
         .message {
             margin-bottom: 15px;
             display: flex;
             align-items: flex-start;
+            max-width: 85%;
         }
 
         .message.user {
-            justify-content: flex-end;
+            margin-left: auto;
+            flex-direction: row-reverse;
         }
 
         .message-content {
-            max-width: 70%;
             padding: 12px 18px;
             border-radius: 18px;
             word-wrap: break-word;
+            max-width: 100%;
         }
 
         .message.user .message-content {
@@ -156,9 +273,8 @@
         }
 
         .message.user .message-avatar {
-            background: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            order: 1;
         }
 
         .message.bot .message-avatar {
@@ -168,37 +284,46 @@
 
         .source-documents {
             margin-top: 10px;
-            padding: 8px 12px;
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 8px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.2);
             font-size: 0.8rem;
-            color: #667eea;
+            opacity: 0.9;
         }
 
         .chat-input-container {
             padding: 20px;
-            border-top: 1px solid #eee;
             background: white;
+            border-top: 1px solid #eee;
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
         }
 
         .chat-input {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        #messageInput {
             flex: 1;
-            padding: 12px 18px;
+            padding: 12px 16px;
             border: 2px solid #eee;
             border-radius: 25px;
+            resize: none;
+            font-family: inherit;
             font-size: 1rem;
             outline: none;
             transition: border-color 0.3s ease;
+            min-height: 20px;
+            max-height: 100px;
         }
 
-        #messageInput:focus {
+        .chat-input:focus {
             border-color: #667eea;
+        }
+
+        .chat-input:disabled {
+            background: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
         }
 
         .send-button {
@@ -216,44 +341,35 @@
             transition: transform 0.2s ease;
         }
 
-        .send-button:hover {
+        .send-button:hover:not(:disabled) {
             transform: scale(1.1);
         }
 
         .send-button:disabled {
-            opacity: 0.5;
+            background: #ccc;
             cursor: not-allowed;
             transform: none;
         }
 
-        .status-bar {
-            padding: 10px 20px;
-            background: #e8f2ff;
-            border-top: 1px solid #ddd;
-            font-size: 0.9rem;
-            color: #666;
-            text-align: center;
-        }
-
         .loading {
             display: none;
-            align-items: center;
-            justify-content: center;
+            text-align: center;
             padding: 10px;
+            color: #667eea;
         }
 
         .loading.show {
-            display: flex;
+            display: block;
         }
 
         .spinner {
+            display: inline-block;
             width: 20px;
             height: 20px;
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid #667eea;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-right: 10px;
         }
 
         @keyframes spin {
@@ -262,10 +378,11 @@
         }
 
         .success-message, .error-message {
-            padding: 10px 15px;
-            border-radius: 8px;
+            padding: 10px;
             margin: 10px 0;
+            border-radius: 5px;
             display: none;
+            font-size: 0.9rem;
         }
 
         .success-message {
@@ -284,47 +401,24 @@
             display: block;
         }
 
-        /* Scrollbar Styling */
-        .chat-messages::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .chat-messages::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
-        }
-
-        .chat-messages::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 3px;
-        }
-
-        .chat-messages::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
-
-        /* Responsive Design */
+        /* Responsive design */
         @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-height: 300px;
+            }
+
             .container {
                 height: 100vh;
                 border-radius: 0;
-                margin: 0;
             }
 
-            .header h1 {
-                font-size: 1.5rem;
-            }
-
-            .upload-area {
-                padding: 20px;
-            }
-
-            .upload-icon {
-                font-size: 2rem;
-            }
-
-            .message-content {
-                max-width: 85%;
+            .header {
+                border-radius: 0;
             }
         }
     </style>
@@ -333,70 +427,126 @@
     <div class="container">
         <div class="header">
             <h1>🤖 RAG Bot</h1>
-            <p>Upload your documents and ask me anything!</p>
+            <p>Your Intelligent Document Assistant</p>
         </div>
 
-        <div class="upload-section">
-            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-                <div class="upload-icon">📄</div>
-                <div class="upload-text">Click to upload PDF documents</div>
-                <div class="upload-subtext">or drag and drop files here</div>
-            </div>
-            <input type="file" id="fileInput" multiple accept=".pdf">
-            
-            <div class="success-message" id="successMessage"></div>
-            <div class="error-message" id="errorMessage"></div>
-            
-            <div class="loading" id="uploadLoading">
-                <div class="spinner"></div>
-                <span>Processing documents...</span>
-            </div>
-        </div>
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="upload-section">
+                    <div class="instruction-banner" id="instructionBanner">
+                        📁 Step 1: Upload your PDF documents first!
+                    </div>
+                    
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">📄</div>
+                        <div class="upload-text">Drop PDF files here</div>
+                        <div class="upload-subtext">or click to browse</div>
+                    </div>
+                    
+                    <input type="file" id="fileInput" multiple accept=".pdf">
+                    
+                    <div class="loading" id="uploadLoading">
+                        <div class="spinner"></div>
+                        Processing documents...
+                    </div>
+                    
+                    <div class="success-message" id="successMessage"></div>
+                    <div class="error-message" id="errorMessage"></div>
+                </div>
 
-        <div class="chat-container">
-            <div class="chat-messages" id="chatMessages">
-                <div class="message bot">
-                    <div class="message-avatar">🤖</div>
-                    <div class="message-content">
-                        Hi! I'm your RAG Bot assistant. Upload a PDF document above and I'll help you find answers from it. Ask me anything about your uploaded documents!
+                <div class="status-section">
+                    <div class="status-bar" id="statusBar">
+                        No documents uploaded yet
+                    </div>
+                    
+                    <div class="document-list" id="documentList">
+                        <div class="document-item" style="text-align: center; color: #999; padding: 20px;">
+                            Upload documents to see them here
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="chat-input-container">
-                <div class="chat-input">
-                    <input type="text" id="messageInput" placeholder="Ask me about your documents..." disabled>
-                    <button class="send-button" id="sendButton" disabled>
-                        <span>📤</span>
-                    </button>
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="welcome-message">
+                        <h2>Welcome to RAG Bot! 🚀</h2>
+                        <p>I'm your intelligent document assistant. I can help you find information, answer questions, and analyze your PDF documents.</p>
+                        
+                        <div class="welcome-steps">
+                            <div class="step">
+                                <div class="step-number">1</div>
+                                <div>
+                                    <strong>Upload Documents:</strong> Start by uploading your PDF documents using the panel on the left.
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div>
+                                    <strong>Wait for Processing:</strong> I'll analyze and index your documents automatically.
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div>
+                                    <strong>Start Chatting:</strong> Once uploaded, ask me anything about your documents!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
+
                 <div class="loading" id="chatLoading">
                     <div class="spinner"></div>
-                    <span>Thinking...</span>
+                    Thinking...
+                </div>
+
+                <div class="chat-input-container">
+                    <div class="chat-input-wrapper">
+                        <textarea 
+                            id="messageInput" 
+                            class="chat-input" 
+                            placeholder="Upload documents first, then ask me anything about them..."
+                            disabled
+                            rows="1"
+                        ></textarea>
+                        <button id="sendButton" class="send-button" disabled>
+                            ➤
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="status-bar" id="statusBar">
-            No documents uploaded yet
         </div>
     </div>
 
     <script>
-        let documentsUploaded = false;
-
-        // File upload handling
+        // DOM elements
+        const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
-        const uploadArea = document.querySelector('.upload-area');
         const uploadLoading = document.getElementById('uploadLoading');
         const successMessage = document.getElementById('successMessage');
         const errorMessage = document.getElementById('errorMessage');
+        const statusBar = document.getElementById('statusBar');
+        const documentList = document.getElementById('documentList');
+        const chatMessages = document.getElementById('chatMessages');
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
-        const chatMessages = document.getElementById('chatMessages');
         const chatLoading = document.getElementById('chatLoading');
-        const statusBar = document.getElementById('statusBar');
+        const instructionBanner = document.getElementById('instructionBanner');
+
+        // State
+        let documentsUploaded = false;
+
+        // Auto-expand textarea
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+        });
+
+        // Upload area click handler
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
 
         // Drag and drop functionality
         uploadArea.addEventListener('dragover', (e) => {
@@ -414,6 +564,8 @@
             const files = Array.from(e.dataTransfer.files).filter(file => file.type === 'application/pdf');
             if (files.length > 0) {
                 uploadFiles(files);
+            } else {
+                showErrorMessage("❌ Please upload only PDF files");
             }
         });
 
@@ -433,7 +585,8 @@
             try {
                 const response = await fetch('/api/upload', {
                     method: 'POST',
-                    body: formData
+                    body: formData,
+                    credentials: 'same-origin'
                 });
 
                 const result = await response.json();
@@ -442,6 +595,15 @@
                     documentsUploaded = true;
                     messageInput.disabled = false;
                     sendButton.disabled = false;
+                    messageInput.placeholder = "Ask me anything about your documents...";
+                    
+                    // Update instruction banner
+                    instructionBanner.textContent = "✅ Step 2: Now you can ask questions!";
+                    instructionBanner.classList.remove('warning');
+                    
+                    // Clear welcome message
+                    chatMessages.innerHTML = '';
+                    
                     showSuccessMessage(`✅ ${result.message}`);
                     updateStatus();
                 } else {
@@ -457,7 +619,8 @@
 
         // Chat functionality
         messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !sendButton.disabled) {
+            if (e.key === 'Enter' && !e.shiftKey && !sendButton.disabled) {
+                e.preventDefault();
                 sendMessage();
             }
         });
@@ -471,6 +634,7 @@
             // Add user message to chat
             addMessage(message, 'user');
             messageInput.value = '';
+            messageInput.style.height = 'auto';
             sendButton.disabled = true;
             chatLoading.classList.add('show');
 
@@ -480,7 +644,8 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ message })
+                    body: JSON.stringify({ message }),
+                    credentials: 'same-origin'
                 });
 
                 const result = await response.json();
@@ -528,27 +693,50 @@
 
         async function updateStatus() {
             try {
-                const response = await fetch('/api/status');
+                const response = await fetch('/api/status', {
+                    credentials: 'same-origin'
+                });
                 const status = await response.json();
                 
                 if (status.documents_uploaded > 0) {
-                    statusBar.textContent = `📄 ${status.documents_uploaded} document(s) uploaded: ${status.documents.join(', ')}`;
+                    statusBar.textContent = `📄 ${status.documents_uploaded} document(s) ready for chat`;
+                    updateDocumentList(status.documents);
                 } else {
                     statusBar.textContent = 'No documents uploaded yet';
+                    documentList.innerHTML = '<div class="document-item" style="text-align: center; color: #999; padding: 20px;">Upload documents to see them here</div>';
                 }
             } catch (error) {
                 console.error('Error updating status:', error);
             }
         }
 
+        function updateDocumentList(documents) {
+            if (documents.length === 0) {
+                documentList.innerHTML = '<div class="document-item" style="text-align: center; color: #999; padding: 20px;">No documents uploaded</div>';
+                return;
+            }
+
+            documentList.innerHTML = documents.map(doc => 
+                `<div class="document-item">
+                    <span>📄 ${doc}</span>
+                </div>`
+            ).join('');
+        }
+
         function showSuccessMessage(message) {
             successMessage.textContent = message;
             successMessage.classList.add('show');
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 5000);
         }
 
         function showErrorMessage(message) {
             errorMessage.textContent = message;
             errorMessage.classList.add('show');
+            setTimeout(() => {
+                errorMessage.classList.remove('show');
+            }, 5000);
         }
 
         function hideMessages() {

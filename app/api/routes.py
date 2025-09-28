@@ -1,18 +1,32 @@
 from typing import List
-from fastapi import APIRouter, File, UploadFile, HTTPException, status
+from fastapi import APIRouter, File, UploadFile, HTTPException, status, Request, Depends
 from app.models.schemas import ChatMessage, ChatResponse, UploadResponse, StatusResponse, DocumentWithId, DeleteResponse
 from app.services.document_processor import DocumentProcessor
 from app.services.retrieval import RetrievalService
 
-# Initialize services
-document_processor = DocumentProcessor()
-retrieval_service = RetrievalService()
+# Initialize services - now session-based
+document_processors = {}  # session_id -> DocumentProcessor
+retrieval_services = {}   # session_id -> RetrievalService
 
 router = APIRouter()
 
+def get_session_id(request: Request) -> str:
+    """Get session ID from request"""
+    return request.session.get("session_id", "default")
+
+def get_user_services(session_id: str = Depends(get_session_id)):
+    """Get or create user-specific services"""
+    if session_id not in document_processors:
+        document_processors[session_id] = DocumentProcessor()
+        retrieval_services[session_id] = RetrievalService()
+    
+    return document_processors[session_id], retrieval_services[session_id]
+
 @router.post("/upload", response_model=UploadResponse)
-async def upload_documents(files: List[UploadFile] = File(...)):
+async def upload_documents(files: List[UploadFile] = File(...), services: tuple = Depends(get_user_services)):
     """Upload and process multiple PDF documents with enhanced support"""
+    
+    document_processor, retrieval_service = services
     
     try:
         # Process uploaded files
@@ -38,8 +52,10 @@ async def upload_documents(files: List[UploadFile] = File(...)):
         raise HTTPException(status_code=500, detail=f"Error processing documents: {str(e)}")
 
 @router.post("/chat", response_model=ChatResponse)
-async def chat(message: ChatMessage):
+async def chat(message: ChatMessage, services: tuple = Depends(get_user_services)):
     """Process chat message and return response with enhanced source information"""
+    
+    document_processor, retrieval_service = services
     
     try:
         # Query the documents
@@ -55,8 +71,10 @@ async def chat(message: ChatMessage):
         raise HTTPException(status_code=500, detail=f"Error processing message: {str(e)}")
 
 @router.get("/status", response_model=StatusResponse)
-async def get_status():
+async def get_status(services: tuple = Depends(get_user_services)):
     """Get current status of the RAG bot with detailed information"""
+    
+    document_processor, retrieval_service = services
     
     # Get document stats
     doc_stats = document_processor.get_document_stats()
@@ -71,8 +89,10 @@ async def get_status():
     )
 
 @router.delete("/reset")
-async def reset_bot():
+async def reset_bot(services: tuple = Depends(get_user_services)):
     """Reset the bot by clearing all uploaded documents"""
+    
+    document_processor, retrieval_service = services
     
     # Reset both services
     document_processor.clear_documents()
@@ -81,8 +101,10 @@ async def reset_bot():
     return {"message": "Bot reset successfully. All documents cleared."}
 
 @router.get("/documents/stats")
-async def get_document_stats():
+async def get_document_stats(services: tuple = Depends(get_user_services)):
     """Get detailed statistics about uploaded documents"""
+    
+    document_processor, retrieval_service = services
     
     doc_stats = document_processor.get_document_stats()
     retrieval_status = retrieval_service.get_status()
@@ -93,8 +115,10 @@ async def get_document_stats():
     }
 
 @router.get("/documents", response_model=List[DocumentWithId])
-async def get_documents():
+async def get_documents(services: tuple = Depends(get_user_services)):
     """Get list of uploaded documents with their IDs"""
+    
+    document_processor, retrieval_service = services
     
     doc_stats = document_processor.get_document_stats()
     return [
@@ -102,8 +126,10 @@ async def get_documents():
     ]
 
 @router.delete("/documents/{document_id}", response_model=DeleteResponse)
-async def delete_document(document_id: int):
+async def delete_document(document_id: int, services: tuple = Depends(get_user_services)):
     """Delete a specific document by its ID and rebuild the vector store"""
+    
+    document_processor, retrieval_service = services
     
     try:
         # Check if document exists
